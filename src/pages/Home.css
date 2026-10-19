@@ -1,0 +1,91 @@
+.home-page {
+  min-height: 75vh;
+  padding: 100px 24px;
+  background: linear-gradient(135deg, #0b1120 0%, #111c35 100%);
+  color: #f8fafc;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.hero {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-label {
+  color: #60a5fa;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  font-size: clamp(40px, 7vw, 76px);
+  line-height: 1.1;
+  margin: 0 0 24px;
+}
+
+.hero h1 span {
+  color: #3b82f6;
+}
+
+.hero-description {
+  max-width: 550px;
+  margin: 0 auto 32px;
+  color: #94a3b8;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.hero-button {
+  display: inline-block;
+  padding: 14px 26px;
+  background-color: #2563eb;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.hero-button:hover {
+  background-color: #1d4ed8;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 1000px;
+  margin: 60px auto 0;
+}
+
+.feature-card {
+  padding: 28px;
+  background-color: #151f32;
+  border: 1px solid #263650;
+  border-radius: 16px;
+  text-align: left;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.feature-card h2 {
+  color: #60a5fa;
+  font-size: 20px;
+  margin: 0 0 12px;
+}
+
+.feature-card p {
+  color: #94a3b8;
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  border-color: #3b82f6;
+}

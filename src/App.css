@@ -1,0 +1,151 @@
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1120;
+  color: #f8fafc;
+}
+
+
+
+.app {
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 32px;
+  background: #111c35;
+  border: 1px solid #263650;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px #00000030;
+  box-sizing: border-box;
+}
+
+
+h1 {
+  color: #2563eb;
+}
+
+.app h1 {
+  color: #60a5fa;
+  margin-top: 0;
+  font-size: 32px;
+}
+
+form input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background: #0b1120;
+  color: #f8fafc;
+  font-size: 15px;
+  outline: none;
+}
+
+form input::placeholder {
+  color: #94a3b8;
+}
+
+form input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px #3b82f630;
+}
+
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
+form button {
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  padding: 12px 18px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+form button:hover {
+  background: #1d4ed8;
+}
+
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #263650;
+}
+
+li label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+li label input[type="checkbox"] {
+  accent-color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #64748b;
+}
+
+li button {
+  background: #351c28;
+  color: #fca5a5;
+  padding: 8px 12px;
+  border: 1px solid #542638;
+  border-radius: 7px;
+  transition: background 0.2s ease;
+}
+
+li button:hover {
+  background: #512334;
+}
+
+
+
+@media (max-width: 680px) {
+  .app {
+    width: calc(100% - 24px);
+    margin: 24px auto;
+    padding: 20px;
+  }
+
+  .app h1 {
+    font-size: 27px;
+  }
+
+  form {
+    gap: 8px;
+  }
+
+  form button {
+    padding: 12px;
+  }
+
+  li {
+    gap: 8px;
+  }
+}
+
