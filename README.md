@@ -41,3 +41,5 @@ TaskFlow is a task-tracking application built with React and Vite.
 ## About the Project
 
 This project is part of my React learning journey, where I am practicing components, routing, state management, browser storage, and Git/GitHub.
+
+Project status: Actively learning and improving.
