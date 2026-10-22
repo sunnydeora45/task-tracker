@@ -60,6 +60,10 @@ function Tasks() {
   const taskToEdit = tasks.find((task) => task.id === id);
   setTaskName(taskToEdit.name);
   }
+  function cancelEdit(){
+    setEditingTaskId(null);
+    setTaskName('');
+  }
     return (
     <main className="app">
       <h1>My Tasks Tracker</h1>
@@ -71,6 +75,11 @@ function Tasks() {
           onChange={(event) => setTaskName(event.target.value)}
         />
         <button type="submit">Add Task</button>
+        {editingTaskId !== null && (
+        <button type="button" onClick={cancelEdit}>
+          Cancel Edit
+        </button>
+)}
       </form>
 
       <h2>My Tasks ({tasks.length})</h2>
@@ -107,6 +116,7 @@ function Tasks() {
               >
                 Edit
               </button>
+              
             </li>
           ))}
         </ul>
