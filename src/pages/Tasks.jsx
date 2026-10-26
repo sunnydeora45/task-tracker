@@ -10,6 +10,14 @@ function Tasks() {
     const [taskName, setTaskName] = useState('');
     const [editingTaskId, setEditingTaskId] = useState(null);
     useEffect(() => {
+    fetch('http://localhost:5000/api/tasks')
+        .then((response) => response.json())
+        .then((data) => {
+            setTasks(data);
+        });
+    }, []);
+    
+    useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }, [tasks]);
 
@@ -20,6 +28,23 @@ function Tasks() {
     if (taskName.trim() === '') {
       return;
     }
+    const newTask = {
+      id: Date.now(),
+      name: taskName.trim(),
+      completed: false,
+    };
+    fetch('http://localhost:5000/api/tasks', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newTask),
+})
+    .then((response) => response.json())
+    .then((savedTask) => {
+        setTasks([...tasks, savedTask]);
+        setTaskName('');
+    });
     if (editingTaskId !== null) {
   setTasks(
     tasks.map((task) =>
@@ -32,16 +57,7 @@ function Tasks() {
   setEditingTaskId(null);
   setTaskName('');
   return;
-}
-    const newTask = {
-      id: Date.now(),
-      name: taskName,
-      completed: false,
-    };
-
-    setTasks([...tasks, newTask]);
-    setTaskName('');
-  }
+}  }
 
   function toggleTask(id) {
     setTasks(
