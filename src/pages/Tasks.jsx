@@ -8,6 +8,7 @@ function Tasks() {
     return savedTasks ? JSON.parse(savedTasks) : [];
 });
     const [taskName, setTaskName] = useState('');
+    const [error, setError] = useState('');
     const [editingTaskId, setEditingTaskId] = useState(null);
     useEffect(() => {
     fetch('http://localhost:5000/api/tasks')
@@ -24,6 +25,7 @@ function Tasks() {
 
   function addTask(event) {
     event.preventDefault();
+    setError('');
 
     if (taskName.trim() === '') {
       return;
@@ -44,6 +46,10 @@ function Tasks() {
     .then((savedTask) => {
         setTasks([...tasks, savedTask]);
         setTaskName('');
+    })
+    .catch ((error) => {
+        console.error('Error adding task:', error);
+        setError('Could not add task. Please try again.');
     });
     if (editingTaskId !== null) {
   setTasks(
@@ -97,6 +103,7 @@ function Tasks() {
         </button>
 )}
       </form>
+      {error && <p className="error-message">{error}</p>}
 
       <h2>My Tasks ({tasks.length})</h2>
 
