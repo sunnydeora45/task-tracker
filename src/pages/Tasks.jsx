@@ -51,36 +51,79 @@ function Tasks() {
         console.error('Error adding task:', error);
         setError('Could not add task. Please try again.');
     });
-    if (editingTaskId !== null) {
-  setTasks(
-    tasks.map((task) =>
-      task.id === editingTaskId
-        ? { ...task, name: taskName.trim() }
-        : task
-    )
-  );
+  }
+    async function updateTask(event) {
+    event.preventDefault();
 
-  setEditingTaskId(null);
-  setTaskName('');
-  return;
-}  }
+    if (taskName.trim() === '') {
+      return;
+    }
 
-  function toggleTask(id) {
+    const response = await fetch(`http://localhost:5000/api/tasks/${editingTaskId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: taskName.trim()
+      })
+    });
+
+    if (!response.ok) {
+      console.error('Failed to update task name');
+      return;
+    }
+
+    const updatedTask = await response.json();
+
     setTasks(
       tasks.map((task) =>
-        task.id === id
+        task._id === editingTaskId ? updatedTask : task
+      )
+    );
+
+    setEditingTaskId(null);
+    setTaskName('');
+  }
+  
+  async function toggleTask(id) {
+    const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        completed: !tasks.find((task) => task._id === id).completed
+      })
+    });
+    if (!response.ok) {
+      console.error('Failed to update task');
+      return;
+    }
+    setTasks(
+      tasks.map((task) =>
+        task._id === id
           ? { ...task, completed: !task.completed }
           : task
       )
     );
   }
 
-  function deleteTask(id) {
-    setTasks(tasks.filter((task) => task.id !== id));
-  }
+  async function deleteTask(id) {
+    const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+        method: 'DELETE'
+    });
+
+    if (!response.ok) {
+        console.error('Failed to delete task');
+        return;
+    }
+
+    setTasks(tasks.filter((task) => task._id !== id));
+}
   function editTask(id) {
-  const taskToEdit = tasks.find((task) => task.id === id);
-  setTaskName(taskToEdit.name);
+  const taskToEdit = tasks.find((task) => task._id === id);
+    setTaskName(taskToEdit.name);
   }
   function cancelEdit(){
     setEditingTaskId(null);
@@ -89,14 +132,11 @@ function Tasks() {
     return (
     <main className="app">
       <h1>My Tasks Tracker</h1>
-      <form onSubmit={addTask}>
-        <input
-          type="text"
-          placeholder="Enter a task..."
-          value={taskName}
-          onChange={(event) => setTaskName(event.target.value)}
-        />
-        <button type="submit">Add Task</button>
+      <form onSubmit={editingTaskId !== null ? updateTask : addTask}>
+        <input type="text" placeholder="Enter a task..." value={taskName} onChange={(event) => setTaskName(event.target.value)} />
+        <button type="submit">
+          {editingTaskId !== null ? 'Save Changes' : 'Add Task'}
+        </button>
         {editingTaskId !== null && (
         <button type="button" onClick={cancelEdit}>
           Cancel Edit
@@ -117,7 +157,7 @@ function Tasks() {
                 <input
                   type="checkbox"
                   checked={task.completed}
-                  onChange={() => toggleTask(task.id)}
+                  onChange={() => toggleTask(task._id)}
                 />
                 <span className={task.completed ? 'completed' : ''}>
                   {task.name}
@@ -126,15 +166,15 @@ function Tasks() {
 
               <button
                 type="button"
-                onClick={() => deleteTask(task.id)}
+                onClick={() => deleteTask(task._id)}
               >
                 Delete
               </button>
               <button
                 type="button"
                 onClick={() => {
-                  setEditingTaskId(task.id);
-                  editTask(task.id);
+                  setEditingTaskId(task._id);
+                  editTask(task._id);
                 }}
               >
                 Edit
