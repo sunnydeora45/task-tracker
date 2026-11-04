@@ -7,6 +7,7 @@ const Task = require("./Task");
 
 const app = express();
 const authRoutes = require("./routes/auth");
+const authMiddleware = require("./middleware/authMiddleware");
 
 app.use(cors());
 app.use(express.json());
@@ -19,15 +20,15 @@ mongoose
 app.get("/", (req, res) => {
   res.send("TaskFlow Backend is running!");
 });
-app.get("/api/tasks", async (req, res) => {
+app.get("/api/tasks", authMiddleware, async (req, res) => {
   const tasks = await Task.find();
   res.json(tasks);
 });
-app.post("/api/tasks", async (req, res) => {
+app.post("/api/tasks", authMiddleware, async (req, res) => {
   const newTask = await Task.create(req.body);
   res.status(201).json(newTask);
 });
-app.put("/api/tasks/:id", async (req, res) => {
+app.put("/api/tasks/:id", authMiddleware, async (req, res) => {
   const taskId = req.params.id;
   const updatedData = req.body;
 
@@ -42,7 +43,7 @@ app.put("/api/tasks/:id", async (req, res) => {
   res.json(updatedTask);
 });
 
-app.delete("/api/tasks/:id", async (req, res) => {
+app.delete("/api/tasks/:id", authMiddleware, async (req, res) => {
   const taskId = req.params.id;
   const deletedTask = await Task.findByIdAndDelete(taskId);
 

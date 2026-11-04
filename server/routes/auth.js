@@ -63,6 +63,23 @@ router.post("/login", async (req, res) => {
     });
   }
   const isPasswordCorrect = await bcrypt.compare(password, user.password);
+  if (!isPasswordCorrect) {
+    return res.status(400).json({
+      message: "Invalid Email or Password",
+    });
+  }
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  }); //JWT token generation
+  res.json({
+    message: "Login Successfully",
+    token,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    },
+  });
 });
 
 module.exports = router;
