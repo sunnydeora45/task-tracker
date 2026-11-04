@@ -6,10 +6,11 @@ const mongoose = require("mongoose");
 const Task = require("./Task");
 
 const app = express();
+const authRoutes = require("./routes/auth");
 
 app.use(cors());
 app.use(express.json());
-
+app.use("/api/auth", authRoutes);
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
@@ -18,7 +19,6 @@ mongoose
 app.get("/", (req, res) => {
   res.send("TaskFlow Backend is running!");
 });
-
 app.get("/api/tasks", async (req, res) => {
   const tasks = await Task.find();
   res.json(tasks);
