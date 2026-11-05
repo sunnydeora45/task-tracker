@@ -6,8 +6,13 @@ function Tasks() {
   const [taskName, setTaskName] = useState("");
   const [error, setError] = useState("");
   const [editingTaskId, setEditingTaskId] = useState(null);
+  const token = localStorage.getItem("token");
   useEffect(() => {
-    fetch("http://localhost:5000/api/tasks")
+    fetch("http://localhost:5000/api/tasks", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch tasks");
@@ -40,6 +45,7 @@ function Tasks() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newTask),
       });
