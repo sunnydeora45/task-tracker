@@ -21,23 +21,41 @@ app.get("/", (req, res) => {
   res.send("TaskFlow Backend is running!");
 });
 app.get("/api/tasks", authMiddleware, async (req, res) => {
-  const tasks = await Task.find();
+  const tasks = await Task.find({
+    userId: req.user.userId,
+  });
+
   res.json(tasks);
 });
 app.post("/api/tasks", authMiddleware, async (req, res) => {
-  const newTask = await Task.create(req.body);
+  const newTask = await Task.create({
+    ...req.body,
+    userId: req.user.userId,
+  });
+
   res.status(201).json(newTask);
 });
+/* app.put() creates an API endpoint for updating an existing task.
+/api/tasks/:id is the URL. :id is a dynamic parameter representing the task ID.
+authMiddleware checks whether the user has a valid JWT.
+async allows us to use await for database operations.
+req contains information received from the frontend.
+res is used to send a response back to the frontend. */
 app.put("/api/tasks/:id", authMiddleware, async (req, res) => {
   const taskId = req.params.id;
   const updatedData = req.body;
 
-  const updatedTask = await Task.findByIdAndUpdate(taskId, updatedData, {
-    new: true,
-  });
+  const updatedTask = await Task.findOneAndUpdate(
+    {
+      _id: taskId,
+      userId: req.user.userId,
+    },
+    updatedData,
+    { returnDocument: "after" },
+  );
 
-  if (!updatedData) {
-    return res.status(404).json({ message: "Task not Found" });
+  if (!updatedTask) {
+    return res.status(404).json({ message: "Task not found" });
   }
 
   res.json(updatedTask);
@@ -45,7 +63,10 @@ app.put("/api/tasks/:id", authMiddleware, async (req, res) => {
 
 app.delete("/api/tasks/:id", authMiddleware, async (req, res) => {
   const taskId = req.params.id;
-  const deletedTask = await Task.findByIdAndDelete(taskId);
+  const deletedTask = await Task.findOneAndDelete({
+    _id: taskId,
+    userId: req.user.userId,
+  });
 
   if (!deletedTask) {
     return res.status(404).json({ message: "Task not found" });

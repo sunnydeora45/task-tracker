@@ -10,6 +10,12 @@ const taskSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  // Connect each task to its owner
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Task", taskSchema);

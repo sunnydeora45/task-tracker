@@ -78,6 +78,7 @@ function Tasks() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             name: taskName.trim(),
@@ -109,6 +110,7 @@ function Tasks() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           completed: !tasks.find((task) => task._id === id).completed,
@@ -134,6 +136,9 @@ function Tasks() {
     try {
       const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!response.ok) {

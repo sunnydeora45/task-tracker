@@ -1,8 +1,10 @@
 import { useState } from "react";
 import "./Login.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "reac1144t-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -26,6 +28,11 @@ function Login() {
       }
       localStorage.setItem("token", data.token);
       alert("Login successful!");
+
+      console.log("Login successful. Navigating to /tasks");
+      console.log("Saved token:", localStorage.getItem("token"));
+
+      navigate("/tasks");
       setEmail("");
       setPassword("");
     } catch (error) {
